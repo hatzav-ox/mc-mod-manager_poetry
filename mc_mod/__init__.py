@@ -8,6 +8,7 @@ from sys import argv
 
 # Own library imports
 from . import curse_forge
+from . import optifine
 
 __version__ = "0.0.1-alpha.1"
 
@@ -20,7 +21,7 @@ profile_jars_dir = Path(os.getenv("LOCALAPPDATA")) / "mc_mod/profiles"
 config_dir.mkdir(parents=True, exist_ok=True)
 profile_jars_dir.mkdir(parents=True, exist_ok=True)
 
-mod_providers: Dict = {"curse_forge": curse_forge}
+mod_providers: Dict = {"curse_forge": curse_forge, "optifine": optifine}
 
 def cli():
 	"""cli parses out sys.argv and dispatches the appropriate commands.

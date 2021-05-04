@@ -13,7 +13,6 @@ def download_mod(info) -> Path:
 	name = info["name"]
 
 	r = requests.get(f"https://addons-ecs.forgesvc.net/api/v2/addon/{id}", headers={"User-Agent": "Mozilla/5.0"})
-
 	r.raise_for_status() # I'm not in love with throwing an error, but I guess this is more robust than checking status_code ourselves.
 
 	json_obj = r.json()
@@ -26,6 +25,7 @@ def download_mod(info) -> Path:
 	file_download_url = _gen_download_url(file_id, filename)
 
 	r = requests.get(file_download_url)
+	r.raise_for_status()
 
 	out_file = Path(f"{os.getenv('LOCALAPPDATA')}/mc_mod/cache/curse_forge/{name}.jar")
 
