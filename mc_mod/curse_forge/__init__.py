@@ -1,4 +1,4 @@
-"""curse_forge provides a basic API for downloading mods from Curse Forge.
+"""curse_forge is a Mod Provider for Curse Forge(curseforge.com).
 """
 
 import os

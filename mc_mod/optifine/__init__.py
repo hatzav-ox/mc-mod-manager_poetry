@@ -1,10 +1,9 @@
-"""optifine provides a basic API for downloading OptiFine from optifine.net.
+"""optifine is a Mod Provider for Curse Forge(curseforge.com).
 """
 
 import os
 import requests
 from bs4 import BeautifulSoup as BS
-from typing import Tuple
 from pathlib import Path
 
 latest_mc_version = "1.16.5"
