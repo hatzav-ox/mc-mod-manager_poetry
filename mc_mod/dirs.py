@@ -23,7 +23,7 @@ def gen_dot_minecraft() -> Path:
 
 def gen_config_dir() -> Path:
 	if current_os == "Linux" or current_os == "Darwin":
-		# Technically, the "correct" location for configuration on Unix is $XDG_CONFIG_HOME, but to keep consistency, $HOME/.config is fine.
+		# Technically, the "correct" location for configuration on Unix is $XDG_CONFIG_HOME, but for consistency, $HOME/.config is fine.
 		_dir = Path(getenv("HOME")) / ".config"
 	elif current_os == "Windows":
 		_dir = Path(getenv("APPDATA"))
