@@ -7,9 +7,11 @@ from pathlib import Path
 
 current_os = platform.system() # Can be 'Linux', 'Darwin', or 'Windows'
 
-def _gen_dot_minecraft() -> Path:
-	if current_os == "Linux" or current_os == "Darwin":
+def gen_dot_minecraft() -> Path:
+	if current_os == "Linux":
 		_dir = Path(getenv("HOME"))
+	elif current_os == "Darwin":
+		_dir = Path(f"{getenv('HOME')}/Library/Application Support/minecraft")
 	elif current_os == "Windows":
 		_dir = Path(getenv("APPDATA"))
 
@@ -19,7 +21,7 @@ def _gen_dot_minecraft() -> Path:
 
 	return _dir
 
-def _gen_config_dir() -> Path:
+def gen_config_dir() -> Path:
 	if current_os == "Linux" or current_os == "Darwin":
 		# Technically, the "correct" location for configuration on Unix is $XDG_CONFIG_HOME, but to keep consistency, $HOME/.config is fine.
 		_dir = Path(getenv("HOME")) / ".config"
@@ -31,7 +33,7 @@ def _gen_config_dir() -> Path:
 
 	return _dir
 
-def _gen_profile_jars_dir() -> Path:
+def gen_profile_jars_dir() -> Path:
 	if current_os == "Linux" or current_os == "Darwin":
 		_dir = Path(getenv("HOME"))
 	elif current_os == "Windows":
