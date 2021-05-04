@@ -3,6 +3,7 @@ import os
 from typing import Dict
 from json import load
 from pathlib import Path
+from shutil import copy as shutil_copy
 from shutil import move as shutil_move
 from sys import argv
 
@@ -29,21 +30,25 @@ def cli():
 	command = argv[1] # mc_mod [command]
 
 	if command == "switch":
-		wanted_profile_name = argv[2] # mc_mod switch [profile_name]
+		profile = argv[2] # mc_mod switch [profile_name]
 
 		# Load profile from APPDATA/mc_mod/profiles/{wanted_profile_name}.json
-		with (config_dir / f"profiles/{wanted_profile_name}.json").open("r") as f:
+		with (config_dir / f"profiles/{profile}.json").open("r") as f:
 			profile_obj = load(f)
 
-		# TODO: Remove mod jars from dot_minecraft/mods
+		# Remove mod jars from dot_minecraft/mods
+		for file in (dot_minecraft / "mods").glob("*.jar"):
+			file.unlink()
 
-		# TODO: Copy profile jars from LOCALAPPDATA to dot_minecraft/mods
+		# Copy profile jars from LOCALAPPDATA to dot_minecraft/mods
+		for file in (profile_jars_dir / profile).glob("*"):
+			shutil_copy(str(file), str(dot_minecraft / "mods" / file.name))
 
 	elif command == "update":
-		wanted_profile_name = argv[2] # mc_mod update [profile_name]
+		profile = argv[2] # mc_mod update [profile_name]
 
 		# Load profile from APPDATA/mc_mod/profiles/{wanted_profile_name}.json
-		with (config_dir / f"profiles/{wanted_profile_name}.json").open("r") as f:
+		with (config_dir / f"profiles/{profile}.json").open("r") as f:
 			profile_obj = load(f)
 
 		# Download up-to-date jars
@@ -52,5 +57,7 @@ def cli():
 			print(file_location)
 
 			# Move jars to profile_jars_dir/profiles/{wanted_profile_name}/{mod_file_name}
-			(profile_jars_dir / wanted_profile_name).mkdir(parents=True, exist_ok=True)
-			shutil_move(str(file_location), str(profile_jars_dir / wanted_profile_name / file_location.name))
+			(profile_jars_dir / profile).mkdir(parents=True, exist_ok=True)
+			shutil_move(str(file_location), str(profile_jars_dir / profile / file_location.name))
+
+		print(f"Updated profile '{profile}'. If you are currently using this profile and wish to take advantage of the updated mods, use the switch command.")
