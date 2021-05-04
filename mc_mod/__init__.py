@@ -1,5 +1,4 @@
 # Other library imports
-import os
 from typing import Dict
 from json import load
 from pathlib import Path
@@ -8,19 +7,18 @@ from shutil import move as shutil_move
 from sys import argv
 
 # Own library imports
+from .dirs import _gen_dot_minecraft
+from .dirs import _gen_config_dir
+from .dirs import _gen_profile_jars_dir
+
 from . import curse_forge
 from . import optifine
 
 __version__ = "0.0.1-alpha.1"
 
-# TODO: Cross-platform locations
-dot_minecraft = Path(os.getenv("APPDATA")) / ".minecraft"
-config_dir = Path(os.getenv("APPDATA")) / "mc_mod"
-profile_jars_dir = Path(os.getenv("LOCALAPPDATA")) / "mc_mod/profiles"
-
-# Ensure our directories are valid
-config_dir.mkdir(parents=True, exist_ok=True)
-profile_jars_dir.mkdir(parents=True, exist_ok=True)
+dot_minecraft = _gen_dot_minecraft()
+config_dir = _gen_config_dir()
+profile_jars_dir = _gen_profile_jars_dir()
 
 mod_providers: Dict = {"curse_forge": curse_forge, "optifine": optifine}
 
