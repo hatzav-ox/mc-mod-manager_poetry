@@ -15,7 +15,14 @@ def download_mod(info) -> Path:
 
 	downloads_page = BS(r.text, "html.parser")
 
-	file_download_url = downloads_page.find_all(_check_bs4_tag)[1].attrs["href"]
+	file_download_page_url = downloads_page.find_all(_check_bs4_tag)[1].attrs["href"]
+
+	r = requests.get(file_download_page_url)
+	r.raise_for_status()
+
+	file_download_page = BS(r.text, "html.parser")
+
+	file_download_url = f"https://optifine.net/{file_download_page.find(lambda tag: tag.has_attr('href') and 'downloadx' in tag['href'])['href']}"
 
 	r = requests.get(file_download_url)
 	r.raise_for_status()
@@ -26,6 +33,9 @@ def download_mod(info) -> Path:
 
 	with out_file.open("wb") as f:
 		f.write(r.content)
+
+	# OptiFine with OptiFabric seems to work, but it might not when using Forge.
+	# https://github.com/sp614x/optifine/issues/5323 explains how to command-line extract the mod jar.
 
 	return out_file
 

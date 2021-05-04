@@ -54,7 +54,6 @@ def cli():
 		# Download up-to-date jars
 		for mod in profile_obj["mods"]:
 			file_location: Path = mod_providers[mod["type"]].download_mod(mod["info"])
-			print(file_location)
 
 			# Move jars to profile_jars_dir/profiles/{wanted_profile_name}/{mod_file_name}
 			(profile_jars_dir / profile).mkdir(parents=True, exist_ok=True)
