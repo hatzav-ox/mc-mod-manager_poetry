@@ -1,1 +1,1 @@
-# mc-mod-manager
+# Minecraft Mod Manager
