@@ -54,6 +54,10 @@ def update(profile: str) -> None:
 	with (config_dir / f"profiles/{profile}.json").open("r") as f:
 		profile_obj = load(f)
 
+	# Clean jar storage before downloading new versions (which may have different names which cause the old jars to not be overwritten).
+	for file in (profile_jars_dir / profile).glob("*"):
+		file.unlink()
+
 	# Download up-to-date jars
 	for mod in profile_obj["mods"]:
 		file_location: Path = mod_providers[mod["type"]].download_mod(mod["info"])
