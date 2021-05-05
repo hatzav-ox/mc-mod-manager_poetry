@@ -41,15 +41,15 @@ def activate(profile: str) -> None:
 	for file in (profile_jars_dir / profile).glob("*"):
 		shutil_copy(str(file), str(dot_minecraft / "mods" / file.name))
 
-def _update_dispatcher(args: List[str]) -> None:
+def _download_dispatcher(args: List[str]) -> None:
 	"""Parses out the command line arguments and calls update.
 
 	Args:
 		args (List[str]): Arguments to parse.
 	"""
-	return update(args[0])
+	return download(args[0])
 
-def update(profile: str) -> None:
+def download(profile: str) -> None:
 	# Load profile from APPDATA/mc_mod/profiles/{wanted_profile_name}.json
 	with (config_dir / f"profiles/{profile}.json").open("r") as f:
 		profile_obj = load(f)
