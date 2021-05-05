@@ -8,6 +8,8 @@ authors = ["Brenek Harrison <brenekharrison@gmail.com>"]
 python = "^3.6"
 requests = "^2.25.1"
 beautifulsoup4 = "^4.9.3"
+githubrelease = "^1.5.8"
+python-dateutil = "^2.8.1"
 
 [tool.poetry.dev-dependencies]
 

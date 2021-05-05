@@ -11,13 +11,14 @@ from .dirs import gen_config_dir
 from .dirs import gen_profile_jars_dir
 
 from . import curse_forge
+from . import github
 from . import optifine
 
 dot_minecraft = gen_dot_minecraft()
 config_dir = gen_config_dir()
 profile_jars_dir = gen_profile_jars_dir()
 
-mod_providers: Dict[str, ModuleType] = {"curse_forge": curse_forge, "optifine": optifine}
+mod_providers: Dict[str, ModuleType] = {"curse_forge": curse_forge, "optifine": optifine, "github": github}
 
 def _activate_dispatcher(args: List[str]) -> None:
 	"""Parses out the command line arguments and calls switch.
