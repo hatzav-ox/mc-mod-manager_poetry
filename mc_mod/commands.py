@@ -58,12 +58,20 @@ def download(profile: str) -> None:
 	for file in (profile_jars_dir / profile).glob("*"):
 		file.unlink()
 
+	errs = {}
 	# Download up-to-date jars
 	for mod in profile_obj["mods"]:
-		file_location: Path = mod_providers[mod["type"]].download_mod(mod["info"])
+		try:
+			file_location: Path = mod_providers[mod["type"]].download_mod(mod["info"])
+		except Exception as e:
+			errs[str(mod)] = e
+			continue
 
 		# Move jars to profile_jars_dir/profiles/{wanted_profile_name}/{mod_file_name}
 		(profile_jars_dir / profile).mkdir(parents=True, exist_ok=True)
 		shutil_move(str(file_location), str(profile_jars_dir / profile / file_location.name))
 
-	print(f"Updated profile '{profile}'. If you are currently using this profile and wish to take advantage of the updated mods, use the activate command.")
+	for err in errs:
+		print(f"Error: {errs[str(err)]}  on profile entry: {err}\n")
+
+	print(f"Downloaded profile '{profile}'. If you are currently using this profile and wish to take advantage of the newly downloaded mods, use the activate command.")
