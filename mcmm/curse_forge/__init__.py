@@ -27,7 +27,7 @@ def download_mod(info) -> Path:
 	r = requests.get(file_download_url)
 	r.raise_for_status()
 
-	out_file = Path(f"{os.getenv('LOCALAPPDATA')}/mc_mod/cache/curse_forge/{name}.jar")
+	out_file = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/curse_forge/{name}.jar")
 
 	out_file.parent.mkdir(parents=True, exist_ok=True)
 

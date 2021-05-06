@@ -1,4 +1,4 @@
-"""dirs.py contains functions for generating the directories required for mc_mod based on the current OS.
+"""dirs.py contains functions for generating the directories required for mcmm based on the current OS.
 """
 
 import platform
@@ -28,7 +28,7 @@ def gen_config_dir() -> Path:
 	elif current_os == "Windows":
 		_dir = Path(getenv("APPDATA"))
 
-	_dir: Path = _dir / "mc_mod"
+	_dir: Path = _dir / "mcmm"
 	_dir.mkdir(parents=True, exist_ok=True)
 
 	return _dir
@@ -39,7 +39,7 @@ def gen_profile_jars_dir() -> Path:
 	elif current_os == "Windows":
 		_dir = Path(getenv("LOCALAPPDATA"))
 
-	_dir: Path = _dir / "mc_mod/profiles"
+	_dir: Path = _dir / "mcmm/profiles"
 	_dir.mkdir(parents=True, exist_ok=True)
 
 	return _dir

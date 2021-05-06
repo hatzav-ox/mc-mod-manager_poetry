@@ -12,7 +12,7 @@ from shutil import move as shutil_move
 from subprocess import Popen
 from typing import Dict
 
-save_dir = Path(f"{os.getenv('LOCALAPPDATA')}/mc_mod/cache/github")
+save_dir = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/github")
 
 save_dir.mkdir(parents=True, exist_ok=True)
 

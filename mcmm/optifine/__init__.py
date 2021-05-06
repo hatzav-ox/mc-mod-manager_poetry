@@ -26,7 +26,7 @@ def download_mod(info) -> Path:
 	r = requests.get(file_download_url)
 	r.raise_for_status()
 
-	out_file = Path(f"{os.getenv('LOCALAPPDATA')}/mc_mod/cache/optifine/optifine.jar")
+	out_file = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/optifine/optifine.jar")
 
 	out_file.parent.mkdir(parents=True, exist_ok=True)
 

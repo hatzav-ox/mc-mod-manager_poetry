@@ -8,7 +8,7 @@ __version__ = "0.0.1-alpha.1"
 def cli():
 	"""cli parses out sys.argv and dispatches the appropriate commands.
 	"""
-	command = argv[1] # mc_mod [command]
+	command = argv[1] # mcmm [command]
 
 	if command == "activate":
 		_activate_dispatcher(argv[2:])

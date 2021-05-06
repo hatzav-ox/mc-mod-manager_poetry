@@ -29,7 +29,7 @@ def _activate_dispatcher(args: List[str]) -> None:
 	return activate(args[0])
 
 def activate(profile: str) -> None:
-	# Load profile from APPDATA/mc_mod/profiles/{wanted_profile_name}.json
+	# Load profile from APPDATA/mcmm/profiles/{wanted_profile_name}.json
 	if not (config_dir / f"profiles/{profile}.json").exists():
 		raise RuntimeError(f"Could not find a profile.json for '{profile}'")
 
@@ -50,7 +50,7 @@ def _download_dispatcher(args: List[str]) -> None:
 	return download(args[0])
 
 def download(profile: str) -> None:
-	# Load profile from APPDATA/mc_mod/profiles/{wanted_profile_name}.json
+	# Load profile from APPDATA/mcmm/profiles/{wanted_profile_name}.json
 	with (config_dir / f"profiles/{profile}.json").open("r") as f:
 		profile_obj = load(f)
 
