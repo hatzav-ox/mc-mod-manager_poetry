@@ -1,5 +1,5 @@
 from json import dump, load
-from mcmm.plugin import HandlerType
+from pathlib import Path
 from shutil import copy as shutil_copy
 from shutil import move as shutil_move
 from typing import List
@@ -8,9 +8,10 @@ from typing import List
 from .dirs import gen_dot_minecraft
 from .dirs import gen_config_dir
 from .dirs import gen_jar_storage_dir
+from .plugin import HandlerType
 from .plugin_internal import ProviderRunner
 
-dot_minecraft = gen_dot_minecraft()
+dot_minecraft: Path = gen_dot_minecraft()
 config_dir = gen_config_dir()
 jar_storage_dir = gen_jar_storage_dir()
 
@@ -27,13 +28,24 @@ def activate(profile: str) -> None:
 	if not (config_dir / f"profiles/{profile}.json").exists():
 		raise RuntimeError(f"Could not find a profile.json for '{profile}'")
 
+	# Load profile json
+	with (config_dir / f"profiles/{profile}.json").open("r") as f:
+		profile_obj = load(f)
+
+	try:
+		dot_minecraft: Path = Path(profile_obj["minecraft_folder"])
+	except KeyError:
+		pass
+
+	mods_folder: Path = dot_minecraft / "mods"
+
 	# Remove mod jars from dot_minecraft/mods
-	for file in (dot_minecraft / "mods").glob("*.jar"):
+	for file in mods_folder.glob("*.jar"):
 		file.unlink()
 
 	# Copy profile jars from jar_storage_dir to dot_minecraft/mods
 	for file in (jar_storage_dir / profile).glob("*"):
-		shutil_copy(str(file), str(dot_minecraft / "mods" / file.name))
+		shutil_copy(str(file), str(mods_folder / file.name))
 
 def _download_dispatcher(args: List[str], provider_runner: ProviderRunner) -> None:
 	"""Parses out the command line arguments and calls download.
@@ -92,8 +104,12 @@ def generate(profile: str, provider_runner: ProviderRunner) -> None:
 			print("Quitting...")
 			return
 
-	# TODO: Allow for setting custom dot_minecraft location
-	new_prof_obj = {"mods": []}
+	npt = input("Minecraft folder (leave empty for system default): ")
+
+	if npt == "":
+		new_prof_obj = {"minecraft_folder": npt, "mods": []}
+	else:
+		new_prof_obj = {"mods": []}
 
 	while True:
 		print("\nAvailable Mod Providers:")
