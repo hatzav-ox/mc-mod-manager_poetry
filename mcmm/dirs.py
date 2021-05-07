@@ -33,13 +33,13 @@ def gen_config_dir() -> Path:
 
 	return _dir
 
-def gen_profile_jars_dir() -> Path:
+def gen_jar_storage_dir() -> Path:
 	if current_os == "Linux" or current_os == "Darwin":
 		_dir = Path(getenv("HOME"))
 	elif current_os == "Windows":
 		_dir = Path(getenv("LOCALAPPDATA"))
 
-	_dir: Path = _dir / "mcmm/profiles"
+	_dir: Path = _dir / "mcmm/jar_storage"
 	_dir.mkdir(parents=True, exist_ok=True)
 
 	return _dir
