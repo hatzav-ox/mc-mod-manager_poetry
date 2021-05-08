@@ -72,7 +72,7 @@ def download(profile: str, provider_runner: ProviderRunner) -> None:
 	# Download up-to-date jars
 	for mod in profile_obj["mods"]:
 		try:
-			file_location, err_str = provider_runner.download(mod["id"], mod["metadata"])
+			file_location, err_str = provider_runner.download(mod["provider"], mod["metadata"])
 			if err_str != "":
 				errs[str(mod)] = err_str
 				continue
@@ -128,7 +128,7 @@ def generate(profile: str, provider_runner: ProviderRunner) -> None:
 		mod_prov_metadata, err_str = provider_runner.generate(mod_prov_id)
 
 		if err_str == "":
-			new_prof_obj["mods"].append({"id": mod_prov_id, "metadata": mod_prov_metadata})
+			new_prof_obj["mods"].append({"provider": mod_prov_id, "metadata": mod_prov_metadata})
 		else:
 			print(f"The selected mod provider errored with the following explanation: {err_str}")
 
