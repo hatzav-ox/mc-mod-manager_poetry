@@ -161,7 +161,7 @@ class GitHubModProvider(PluginBase):
 		while True:
 			npt = input("Input 'release' or 'compile': ")
 			if npt.lower() == "release":
-				latest = input("Use latest release (y/n): ") == "y"
+				latest = input("Use latest release (y/n): ").lower() == "y"
 
 				tag = input("Target tag(empty for None): ")
 				if tag == "":

@@ -3,7 +3,7 @@ from sys import argv
 from types import ModuleType
 from typing import List, Union
 
-from . import curse_forge, github, optifine
+from . import curse_forge, github, optifine, modrinth
 from .commands import _activate_dispatcher
 from .commands import _download_dispatcher
 from .commands import _generate_dispatcher
@@ -29,7 +29,7 @@ def cli():
 		_generate_dispatcher(argv[2:], mod_providers)
 
 def aggregate_mod_provider_list() -> List[Union[str, ModuleType]]:
-	internal_mps = [curse_forge, optifine, github]
+	internal_mps = [curse_forge, optifine, github, modrinth]
 	config_dir = gen_config_dir()
 	config_file = config_dir / "config.json"
 

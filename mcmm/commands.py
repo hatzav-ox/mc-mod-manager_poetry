@@ -33,7 +33,9 @@ def activate(profile: str) -> None:
 		profile_obj = load(f)
 
 	try:
-		dot_minecraft: Path = Path(profile_obj["minecraft_folder"])
+		mc_dir = profile_obj["minecraft_folder"]
+		if mc_dir != "" and mc_dir != None:
+			dot_minecraft: Path = Path(mc_dir)
 	except KeyError:
 		pass
 
@@ -107,9 +109,9 @@ def generate(profile: str, provider_runner: ProviderRunner) -> None:
 	npt = input("Minecraft folder (leave empty for system default): ")
 
 	if npt == "":
-		new_prof_obj = {"minecraft_folder": npt, "mods": []}
-	else:
 		new_prof_obj = {"mods": []}
+	else:
+		new_prof_obj = {"minecraft_folder": npt, "mods": []}
 
 	while True:
 		print("\nAvailable Mod Providers:")
