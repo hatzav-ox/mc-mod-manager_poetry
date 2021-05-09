@@ -13,7 +13,7 @@ from .commands import _list_dispatcher
 from .dirs import gen_config_dir
 from .plugin_internal import load_providers
 
-__version__ = "0.0.1-alpha.1"
+__version__ = "0.0.1"
 
 def cli():
 	"""cli parses out sys.argv and dispatches the appropriate commands.
