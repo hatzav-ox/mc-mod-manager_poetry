@@ -137,3 +137,17 @@ def generate(profile: str, provider_runner: ProviderRunner) -> None:
 		dump(new_prof_obj, f, indent=4)
 
 	print(f"Profile '{profile}' successfully generated.")
+
+def _list_dispatcher(args: List[str]) -> None:
+	"""Parses out the command line arguments and calls list_profiles.
+
+	Args:
+		args (List[str]): Arguments to parse.
+	"""
+	return list_profiles()
+
+def list_profiles():
+	profile_storage = config_dir / "profiles"
+
+	for file in profile_storage.glob("*.json"):
+		print(file.name.replace(".json", ""))
