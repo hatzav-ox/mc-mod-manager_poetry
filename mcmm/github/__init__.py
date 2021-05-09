@@ -1,9 +1,7 @@
 """github is a Mod Provider for GitHub(github.com).
 """
 
-import os
-import random
-import requests
+import os, platform, random, requests
 from dateutil.parser import isoparse
 from github_release import get_releases
 from pathlib import Path
@@ -15,8 +13,10 @@ from typing import Dict, Tuple
 
 from ..plugin import DownloadHandler, GenerationHandler, MCMMPlugin, PluginBase
 
-save_dir = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/github")
-
+if platform.system() == "Windows":
+	save_dir = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/github")
+else:
+	save_dir = Path(f"{os.getenv('HOME')}/.cache/mcmm/github")
 save_dir.mkdir(parents=True, exist_ok=True)
 
 @MCMMPlugin

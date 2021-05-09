@@ -1,13 +1,18 @@
 """curse_forge is a Mod Provider for Curse Forge(curseforge.com).
 """
 
-import os
-import requests
+import os, platform, requests
 from pathlib import Path
 from requests.models import HTTPError
 from typing import Dict, Tuple
 
 from ..plugin import DownloadHandler, GenerationHandler, MCMMPlugin, PluginBase
+
+if platform.system() == "Windows":
+	cache_dir = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/curse_forge")
+else:
+	cache_dir = Path(f"{os.getenv('HOME')}/.cache/mcmm/curse_forge")
+cache_dir.mkdir(exist_ok=True, parents=True)
 
 @MCMMPlugin
 class CurseForgeModProvider(PluginBase):
@@ -46,7 +51,7 @@ class CurseForgeModProvider(PluginBase):
 		except HTTPError as e:
 			return (Path.cwd(), str(e))
 
-		out_file = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/curse_forge/{name}.jar")
+		out_file = cache_dir / f"{name}.jar"
 
 		out_file.parent.mkdir(parents=True, exist_ok=True)
 

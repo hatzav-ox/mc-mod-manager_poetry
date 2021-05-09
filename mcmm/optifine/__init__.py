@@ -1,14 +1,19 @@
 """optifine is a Mod Provider for Curse Forge(curseforge.com).
 """
 
-import os
-import requests
+import os, platform, requests
 from bs4 import BeautifulSoup as BS
 from pathlib import Path
 from requests.models import HTTPError
 from typing import Dict, Tuple
 
 from ..plugin import DownloadHandler, GenerationHandler, MCMMPlugin, PluginBase
+
+if platform.system() == "Windows":
+	cache_dir = Path(f"{os.getenv('LOCALAPPDATA')}/mcmm/cache/optifine")
+else:
+	cache_dir = Path(f"{os.getenv('HOME')}/.cache/mcmm/optifine")
+cache_dir.mkdir(exist_ok=True, parents=True)
 
 @MCMMPlugin
 class OptifineModProvider(PluginBase):
@@ -45,7 +50,7 @@ class OptifineModProvider(PluginBase):
 		except HTTPError as e:
 			return Path.cwd(), str(e)
 
-		out_file = Path(f"{os.getenv('LOCALAPPDATA')}/mc_mod/cache/optifine/optifine.jar")
+		out_file = cache_dir / "optifine.jar"
 
 		out_file.parent.mkdir(parents=True, exist_ok=True)
 
