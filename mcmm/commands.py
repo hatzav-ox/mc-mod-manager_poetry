@@ -24,6 +24,7 @@ def _activate_dispatcher(args: List[str]) -> None:
 	return activate(args[0])
 
 def activate(profile: str) -> None:
+	global dot_minecraft
 	# Load profile json
 	if not (config_dir / f"profiles/{profile}.json").exists():
 		raise RuntimeError(f"Could not find a profile.json for '{profile}'")
@@ -35,7 +36,7 @@ def activate(profile: str) -> None:
 	try:
 		mc_dir = profile_obj["minecraft_folder"]
 		if mc_dir != "" and mc_dir != None:
-			dot_minecraft: Path = Path(mc_dir)
+			dot_minecraft = Path(mc_dir)
 	except KeyError:
 		pass
 
