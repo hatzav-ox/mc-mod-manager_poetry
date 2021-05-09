@@ -80,9 +80,9 @@ def load_providers(providers: List[Union[str, ModuleType]]) -> ProviderRunner:
 
 		# Recommended amount of @MCMMPlugin decorators sanity check
 		if len(mcmm_provider_classes) == 0:
-			print(f"{Fore.YELLOW}[WARNING] Could not find an MCMM provider class in {provider}. Maybe it is missing the @MCMMPlugin decoration?{Fore.RESET}")
+			print(f"[{Fore.YELLOW}WARNING{Fore.RESET}] Could not find an MCMM provider class in {provider}. Maybe it is missing the @MCMMPlugin decoration?")
 		elif len(mcmm_provider_classes) > 1:
-			print(f"{Fore.YELLOW}[WARNING] {provider} provided more than one MCMM plugin class. The recommended limit is one per module.{Fore.RESET}")
+			print(f"[{Fore.YELLOW}WARNING{Fore.RESET}] {provider} provided more than one MCMM plugin class. The recommended limit is one per module.")
 
 		# Identify functions that have
 		for provider_class in mcmm_provider_classes:
@@ -104,7 +104,7 @@ def load_providers(providers: List[Union[str, ModuleType]]) -> ProviderRunner:
 				try:
 					# Check if valid event type
 					if func._mcmm_event not in HandlerType._all_types:
-						print(f"{Fore.RED}[ERROR] Function '{func.__name__}' of '{provider_id}' has invalid event type '{func._mcmm_event}'{Fore.RESET}'")
+						print(f"[{Fore.RED}ERROR{Fore.RESET}] Function '{func.__name__}' of '{provider_id}' has invalid event type '{func._mcmm_event}'")
 
 					return_providers[provider_id][func._mcmm_event] = func
 					
@@ -114,6 +114,6 @@ def load_providers(providers: List[Union[str, ModuleType]]) -> ProviderRunner:
 					return_event_registry[func._mcmm_event].append(provider_id)
 
 				except AttributeError:
-					print(f"{Fore.RED}[ERROR] '{func.__name__}' of '{provider_id}' was marked as an MCMM event handler but did not specify the event to handle!{Fore.RESET}")
+					print(f"[{Fore.RED}ERROR{Fore.RESET}] '{func.__name__}' of '{provider_id}' was marked as an MCMM event handler but did not specify the event to handle!")
 
 	return ProviderRunner(return_providers, return_event_registry)

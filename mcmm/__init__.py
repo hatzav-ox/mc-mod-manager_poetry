@@ -1,3 +1,5 @@
+from colorama import init as colorama_init
+from colorama import Fore
 from json import load
 from sys import argv
 from types import ModuleType
@@ -16,12 +18,18 @@ __version__ = "0.0.1-alpha.1"
 def cli():
 	"""cli parses out sys.argv and dispatches the appropriate commands.
 	"""
+	colorama_init()
+
 	if "--help" in argv:
 		help()
 		return
 
 	if "--version" in argv:
 		version()
+		return
+
+	if len(argv) == 1:
+		print(f"[{Fore.RED}ERROR{Fore.RESET}] Expected at least one argument.")
 		return
 
 	command = argv[1] # mcmm [command]

@@ -1,3 +1,4 @@
+from colorama import Fore
 from json import dump, load
 from pathlib import Path
 from shutil import copy as shutil_copy
@@ -27,7 +28,8 @@ def activate(profile: str) -> None:
 	global dot_minecraft
 	# Load profile json
 	if not (config_dir / f"profiles/{profile}.json").exists():
-		raise RuntimeError(f"Could not find a profile.json for '{profile}'")
+		print(f"[{Fore.RED}ERROR{Fore.RESET}] Could not find a profile.json for '{profile}'")
+		return
 
 	# Load profile json
 	with (config_dir / f"profiles/{profile}.json").open("r") as f:
@@ -50,6 +52,8 @@ def activate(profile: str) -> None:
 	for file in (jar_storage_dir / profile).glob("*"):
 		shutil_copy(str(file), str(mods_folder / file.name))
 
+	print(f"[{Fore.GREEN}SUCCESS{Fore.RESET}] Profile '{profile}' successfully activated.")
+
 def _download_dispatcher(args: List[str], provider_runner: ProviderRunner) -> None:
 	"""Parses out the command line arguments and calls download.
 
@@ -63,12 +67,12 @@ def download(profile: str, provider_runner: ProviderRunner) -> None:
 	with (config_dir / f"profiles/{profile}.json").open("r") as f:
 		profile_obj = load(f)
 
-	print(f"Cleaning existing jars from jar storage of profile '{profile}'.")
+	print(f"[{Fore.GREEN}INFO{Fore.RESET}] Cleaning existing jars from jar storage of profile '{profile}'.")
 	# Clean jar storage before downloading new versions (which may have different names which cause the old jars to not be overwritten).
 	for file in (jar_storage_dir / profile).glob("*"):
 		file.unlink()
 
-	print(f"Downloading new jars for profile '{profile}'.")
+	print(f"[{Fore.GREEN}INFO{Fore.RESET}] Downloading new jars for profile '{profile}'.")
 	errs = {}
 	# Download up-to-date jars
 	for mod in profile_obj["mods"]:
@@ -86,9 +90,9 @@ def download(profile: str, provider_runner: ProviderRunner) -> None:
 		shutil_move(str(file_location), str(jar_storage_dir / profile / file_location.name))
 
 	for err in errs:
-		print(f"Error: {errs[str(err)]}  on profile entry: {err}\n")
+		print(f"{Fore.RED}Error{Fore.RESET}: {errs[str(err)]}  on profile entry: {err}\n")
 
-	print(f"Downloaded profile '{profile}'. If you are currently using this profile and wish to take advantage of the newly downloaded mods, use the activate command.")
+	print(f"[{Fore.GREEN}SUCCESS{Fore.RESET}] Profile '{profile}' successfully downloaded. If you are currently using this profile and wish to take advantage of the newly downloaded mods, use the {Fore.CYAN}activate{Fore.RESET} command.")
 
 def _generate_dispatcher(args: List[str], provider_runner: ProviderRunner) -> None:
 	"""Parses out the command line arguments and calls generate.
@@ -117,26 +121,27 @@ def generate(profile: str, provider_runner: ProviderRunner) -> None:
 	while True:
 		print("\nAvailable Mod Providers:")
 		for mod_id in provider_runner._event_registry[HandlerType.generate]:
-			print(f"\t{mod_id}")
+			print(f"    {mod_id}")
 
 		mod_prov_id = input("\nEnter a Mod Provider ID or 'finish' to finish: ")
 		if mod_prov_id == "finish":
 			break
 
 		if mod_prov_id not in provider_runner._event_registry[HandlerType.generate]:
-			print(f"'{mod_prov_id}' is not a valid Mod Provider ID.")
+			print(f"[{Fore.RED}ERROR{Fore.RESET}] '{mod_prov_id}' is not a valid Mod Provider ID.")
+			continue
 
 		mod_prov_metadata, err_str = provider_runner.generate(mod_prov_id)
 
 		if err_str == "":
 			new_prof_obj["mods"].append({"provider": mod_prov_id, "metadata": mod_prov_metadata})
 		else:
-			print(f"The selected mod provider errored with the following explanation: {err_str}")
+			print(f"[{Fore.RED}ERROR{Fore.RESET}] The selected mod provider errored with the following explanation: {err_str}")
 
 	with profile_json_file.open("w") as f:
 		dump(new_prof_obj, f, indent=4)
 
-	print(f"Profile '{profile}' successfully generated.")
+	print(f"[{Fore.GREEN}SUCCESS{Fore.RESET}] Profile '{profile}' successfully generated.")
 
 def _list_dispatcher(args: List[str]) -> None:
 	"""Parses out the command line arguments and calls list_profiles.
