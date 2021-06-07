@@ -58,7 +58,7 @@ Commands:
 
     - generate <profile> - Creates a new profile.
 
-	- list               - Lists all available profiles.
+    - list               - Lists all available profiles.
 
 """)
 
