@@ -19,7 +19,7 @@ class CurseForgeModProvider(PluginBase):
 	id = "curse_forge"
 	help_string = "Curse Forge Mod Provider"
 
-	latest_mc_version = "1.16.5"
+	latest_mc_version = "1.17.0"
 
 	@DownloadHandler
 	def download_mod(self, info) -> Tuple[Path, str]:
