@@ -20,7 +20,7 @@ save_dir.mkdir(exist_ok=True, parents=True)
 class ModrinthModProvider(PluginBase):
 	id = "modrinth"
 	help_string = "Modrinth Mod Provider"
-	latest_game_version = "1.17.0"
+	latest_game_version = "1.17"
 
 	@DownloadHandler
 	def download(self, metadata: Dict) -> Tuple[Path, str]:
