@@ -34,7 +34,10 @@ class OptifineModProvider(PluginBase):
 
 		downloads_page = BS(r.text, "html.parser")
 
-		file_download_page_url = downloads_page.find_all(self._check_bs4_tag)[1].attrs["href"]
+		def check_bs4_tag_wrapper(tag: BS) -> bool:
+			return self._check_bs4_tag(tag, prerel_allowed)
+
+		file_download_page_url = downloads_page.find_all(check_bs4_tag_wrapper)[1].attrs["href"]
 
 		r = requests.get(file_download_page_url)
 		try:
