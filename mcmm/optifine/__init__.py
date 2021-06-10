@@ -24,6 +24,8 @@ class OptifineModProvider(PluginBase):
 
 	@DownloadHandler
 	def download_mod(self, info) -> Tuple[Path, str]:
+		prerel_allowed = info["allow_prerelease"] if "allow_prerelease" in info else False
+
 		r = requests.get("https://optifine.net/downloads")
 		try:
 			r.raise_for_status()
@@ -62,8 +64,10 @@ class OptifineModProvider(PluginBase):
 
 		return (out_file, "")
 
-	def _check_bs4_tag(self, tag: BS) -> bool:
-		return tag.has_attr("href") and self.latest_mc_version in tag.attrs["href"] and not "pre" in tag.attrs["href"]
+	def _check_bs4_tag(self, tag: BS, allow_prerelease: bool) -> bool:
+		has_target_version = tag.has_attr("href") and self.latest_mc_version in tag.attrs["href"]
+		is_prerel = "pre" in tag.attrs["href"]
+		return has_target_version and not is_prerel if not allow_prerelease else has_target_version
 
 	@GenerationHandler
 	def generate(self) -> Tuple[Dict, str]:
