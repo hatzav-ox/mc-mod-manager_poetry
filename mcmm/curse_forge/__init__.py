@@ -19,10 +19,8 @@ class CurseForgeModProvider(PluginBase):
 	id = "curse_forge"
 	help_string = "Curse Forge Mod Provider"
 
-	latest_mc_version = "1.17"
-
 	@DownloadHandler
-	def download_mod(self, info) -> Tuple[Path, str]:
+	def download_mod(self, mc_version, info) -> Tuple[Path, str]:
 		id = info["id"]
 		name = info["name"]
 
@@ -35,11 +33,11 @@ class CurseForgeModProvider(PluginBase):
 		json_obj = r.json()
 
 		if info["check_file_name"] == None:
-			file_id, filename, err_str = self._extract_file(json_obj["gameVersionLatestFiles"])
+			file_id, filename, err_str = self._extract_file(mc_version, json_obj["gameVersionLatestFiles"])
 			if err_str != "":
 				return (Path.cwd(), err_str)
 		else:
-			file_id, filename, err_str = self._extract_file_with_file_name_check(json_obj["gameVersionLatestFiles"], info["check_file_name"])
+			file_id, filename, err_str = self._extract_file_with_file_name_check(mc_version, json_obj["gameVersionLatestFiles"], info["check_file_name"])
 			if err_str != "":
 				return (Path.cwd(), err_str)
 
@@ -60,29 +58,29 @@ class CurseForgeModProvider(PluginBase):
 
 		return (out_file, "")
 
-	def _extract_file(self, json_obj) -> Tuple[int, str, str]:
+	def _extract_file(self, mc_version: str, json_obj) -> Tuple[int, str, str]:
 		file_id = 0
 		filename = ""
 		for obj in json_obj:
-			if obj["gameVersion"] == self.latest_mc_version:
+			if obj["gameVersion"] == mc_version:
 				file_id = obj["projectFileId"]
 				filename = obj["projectFileName"]
 				break
 		else:
-			return (0, "", f"No files for Minecraft {self.latest_mc_version} found!")
+			return (0, "", f"No files for Minecraft {mc_version} found!")
 
 		return (file_id, filename, "")
 
-	def _extract_file_with_file_name_check(self, json_obj, search_file_name: str) -> Tuple[int, str, str]:
+	def _extract_file_with_file_name_check(self, mc_version: str, json_obj, search_file_name: str) -> Tuple[int, str, str]:
 		file_id = 0
 		filename = ""
 		for obj in json_obj:
-			if obj["gameVersion"] == self.latest_mc_version and search_file_name.lower() in obj["projectFileName"].lower():
+			if obj["gameVersion"] == mc_version and search_file_name.lower() in obj["projectFileName"].lower():
 				file_id = obj["projectFileId"]
 				filename = obj["projectFileName"]
 				break
 		else:
-			return (0, "", f"No files for Minecraft {self.latest_mc_version} found!")
+			return (0, "", f"No files for Minecraft {mc_version} found!")
 
 		return (file_id, filename, "")
 

@@ -20,10 +20,8 @@ class OptifineModProvider(PluginBase):
 	id = "optifine"
 	help_string = "Optifine Mod Provider"
 
-	latest_mc_version = "1.17"
-
 	@DownloadHandler
-	def download_mod(self, info) -> Tuple[Path, str]:
+	def download_mod(self, mc_version, info) -> Tuple[Path, str]:
 		prerel_allowed = info["allow_prerelease"] if "allow_prerelease" in info else False
 
 		r = requests.get("https://optifine.net/downloads")
@@ -35,7 +33,7 @@ class OptifineModProvider(PluginBase):
 		downloads_page = BS(r.text, "html.parser")
 
 		def check_bs4_tag_wrapper(tag: BS) -> bool:
-			return self._check_bs4_tag(tag, prerel_allowed)
+			return self._check_bs4_tag(tag, mc_version, prerel_allowed)
 
 		file_download_page_url = downloads_page.find_all(check_bs4_tag_wrapper)[1].attrs["href"]
 
@@ -67,8 +65,8 @@ class OptifineModProvider(PluginBase):
 
 		return (out_file, "")
 
-	def _check_bs4_tag(self, tag: BS, allow_prerelease: bool) -> bool:
-		has_target_version = tag.has_attr("href") and self.latest_mc_version in tag.attrs["href"]
+	def _check_bs4_tag(self, tag: BS, mc_version: str, allow_prerelease: bool) -> bool:
+		has_target_version = tag.has_attr("href") and mc_version in tag.attrs["href"]
 		is_prerel = "pre" in tag.attrs["href"]
 		return has_target_version and not is_prerel if not allow_prerelease else has_target_version
 

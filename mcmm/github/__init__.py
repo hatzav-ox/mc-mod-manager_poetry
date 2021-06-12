@@ -25,7 +25,7 @@ class GitHubModProvider(PluginBase):
 	help_string = "GitHub Mod Provider"
 
 	@DownloadHandler
-	def download_mod(self, info: Dict) -> Tuple[Path, str]:
+	def download_mod(self, mc_version: str, info: Dict) -> Tuple[Path, str]:
 		repo = info["repo"]
 
 		if info["releases"] != None:

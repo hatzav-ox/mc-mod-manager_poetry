@@ -20,10 +20,9 @@ save_dir.mkdir(exist_ok=True, parents=True)
 class ModrinthModProvider(PluginBase):
 	id = "modrinth"
 	help_string = "Modrinth Mod Provider"
-	latest_game_version = "1.17"
 
 	@DownloadHandler
-	def download(self, metadata: Dict) -> Tuple[Path, str]:
+	def download(self, mc_version: str, metadata: Dict) -> Tuple[Path, str]:
 		_id = metadata["id"]
 		allow_prereleases = metadata["allow_prereleases"]
 		mod_loader = metadata["mod_loader"]
@@ -45,7 +44,7 @@ class ModrinthModProvider(PluginBase):
 			if mod_loader not in file["loaders"]:
 				continue
 
-			if self.latest_game_version not in file["game_versions"]:
+			if mc_version not in file["game_versions"]:
 				continue
 
 			for f in file["files"]:
