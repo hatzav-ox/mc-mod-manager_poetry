@@ -74,4 +74,4 @@ class OptifineModProvider(PluginBase):
 
 	@GenerationHandler
 	def generate(self) -> Tuple[Dict, str]:
-		return ({}, "")
+		return ({"allow_prerelease": input("Allow Pre-Release versions (y/N)? ").lower() == "y"}, "")
