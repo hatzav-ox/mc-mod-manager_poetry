@@ -77,7 +77,7 @@ def download(profile: str, provider_runner: ProviderRunner) -> None:
 	# Download up-to-date jars
 	for mod in profile_obj["mods"]:
 		try:
-			file_location, err_str = provider_runner.download(mod["provider"], mod["metadata"])
+			file_location, err_str = provider_runner.download(mod["provider"], profile_obj["minecraft_version"], mod["metadata"])
 			if err_str != "":
 				errs[str(mod)] = err_str
 				continue
@@ -117,6 +117,13 @@ def generate(profile: str, provider_runner: ProviderRunner) -> None:
 		new_prof_obj = {"mods": []}
 	else:
 		new_prof_obj = {"minecraft_folder": npt, "mods": []}
+
+	npt = input("Minecraft Version (default: 1.17): ")
+
+	if npt == "":
+		new_prof_obj["minecraft_version"] = "1.17"
+	else:
+		new_prof_obj["minecraft_version"] = npt
 
 	while True:
 		print("\nAvailable Mod Providers:")

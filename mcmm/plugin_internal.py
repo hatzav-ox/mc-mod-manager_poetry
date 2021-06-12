@@ -12,7 +12,7 @@ class ProviderRunner:
 		self._providers: Dict = providers
 		self._event_registry: Dict = event_registry
 
-	def download(self, provider_id: str, metadata: Dict) -> Tuple[Path, str]:
+	def download(self, provider_id: str, mc_version: str, metadata: Dict) -> Tuple[Path, str]:
 		try:
 			provider = self._providers[provider_id]
 		except KeyError:
@@ -24,7 +24,7 @@ class ProviderRunner:
 			return (Path.cwd(), f"[ERROR] Mod provider '{provider_id}' does not provide a download handler.")
 
 		# Since the handler is supposed to be a method, we need to provide the class instance as the self parameter.
-		return handler(provider["instance"], metadata)
+		return handler(provider["instance"], mc_version, metadata)
 
 	def generate(self, provider_id: str) -> Tuple[Dict, str]:
 		try:
