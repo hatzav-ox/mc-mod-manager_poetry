@@ -60,9 +60,19 @@ def _download_dispatcher(args: List[str], provider_runner: ProviderRunner) -> No
 	Args:
 		args (List[str]): Arguments to parse.
 	"""
-	return download(args[0], provider_runner)
 
-def download(profile: str, provider_runner: ProviderRunner) -> None:
+	mc_version_override = None
+	if "--mc-version" in args:
+		i = args.index("--mc-version")
+		try:
+			mc_version_override = args[i+1]
+		except IndexError:
+			print(f"[{Fore.RED}ERROR{Fore.RESET}] Expected argument after '--mc-version'")
+			return
+
+	return download(args[0], provider_runner, mc_version_override=mc_version_override)
+
+def download(profile: str, provider_runner: ProviderRunner, mc_version_override=None) -> None:
 	# Load profile json
 	with (config_dir / f"profiles/{profile}.json").open("r") as f:
 		profile_obj = load(f)
@@ -77,7 +87,8 @@ def download(profile: str, provider_runner: ProviderRunner) -> None:
 	# Download up-to-date jars
 	for mod in profile_obj["mods"]:
 		try:
-			file_location, err_str = provider_runner.download(mod["provider"], profile_obj["minecraft_version"], mod["metadata"])
+			mc_version = mc_version_override if mc_version_override is not None else profile_obj["minecraft_version"]
+			file_location, err_str = provider_runner.download(mod["provider"], mc_version, mod["metadata"])
 			if err_str != "":
 				errs[str(mod)] = err_str
 				continue
