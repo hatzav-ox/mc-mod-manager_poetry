@@ -13,7 +13,7 @@ from .commands import _list_dispatcher
 from .dirs import gen_config_dir
 from .plugin_internal import load_providers
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 def cli():
 	"""cli parses out sys.argv and dispatches the appropriate commands.
@@ -55,6 +55,7 @@ Commands:
     - activate <profile> - Removes all existing jars from the .minecraft/mods folder and copies the jars associated with <profile> into .minecraft/mods.
 
     - download <profile> - Downloads all jars defined in <profile> to a storage location.
+        --mc-version <version> - Forces a download of jars for Minecraft Version <version> in all supporting Mod Providers.
 
     - generate <profile> - Creates a new profile.
 
