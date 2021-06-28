@@ -67,7 +67,7 @@ class OptifineModProvider(PluginBase):
 
 	def _check_bs4_tag(self, tag: BS, mc_version: str, allow_prerelease: bool) -> bool:
 		has_target_version = tag.has_attr("href") and mc_version in tag.attrs["href"]
-		is_prerel = "pre" in tag.attrs["href"]
+		is_prerel = tag.has_attr("href") and "pre" in tag.attrs["href"]
 		return has_target_version and not is_prerel if not allow_prerelease else has_target_version
 
 	@GenerationHandler
