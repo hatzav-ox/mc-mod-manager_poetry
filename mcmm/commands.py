@@ -12,6 +12,8 @@ from .dirs import gen_jar_storage_dir
 from .plugin import HandlerType
 from .plugin_internal import ProviderRunner
 
+DEFAULT_MC_VERSION = "1.17.1"
+
 dot_minecraft: Path = gen_dot_minecraft()
 config_dir = gen_config_dir()
 jar_storage_dir = gen_jar_storage_dir()
@@ -129,10 +131,10 @@ def generate(profile: str, provider_runner: ProviderRunner) -> None:
 	else:
 		new_prof_obj = {"minecraft_folder": npt, "mods": []}
 
-	npt = input("Minecraft Version (default: 1.17): ")
+	npt = input(f"Minecraft Version (default: {DEFAULT_MC_VERSION}): ")
 
 	if npt == "":
-		new_prof_obj["minecraft_version"] = "1.17"
+		new_prof_obj["minecraft_version"] = DEFAULT_MC_VERSION
 	else:
 		new_prof_obj["minecraft_version"] = npt
 
