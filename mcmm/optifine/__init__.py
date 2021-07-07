@@ -1,4 +1,4 @@
-"""optifine is a Mod Provider for Curse Forge(curseforge.com).
+"""optifine is a Mod Provider for Optifine(optifine.net).
 """
 
 import os, platform, requests
