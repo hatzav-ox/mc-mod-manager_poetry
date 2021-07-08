@@ -3,7 +3,7 @@ from json import dump, load
 from pathlib import Path
 from shutil import copy as shutil_copy
 from shutil import move as shutil_move
-from typing import List
+from typing import List, Union
 
 # Own library imports
 from .dirs import gen_dot_minecraft
@@ -176,3 +176,20 @@ def list_profiles():
 
 	for file in profile_storage.glob("*.json"):
 		print(file.name.replace(".json", ""))
+
+def _deactivate_dispatcher(args: List[str]) -> None:
+	mc_dir = None
+	if len(args) != 0:
+		mc_dir = Path(args[0])
+
+	return deactivate(mc_dir)
+
+def deactivate(minecraft_dir: Union[Path, None]=None):
+	if minecraft_dir is None:
+		mods_folder: Path = dot_minecraft / "mods"
+	else:
+		mods_folder: Path = minecraft_dir / "mods"
+
+	# Remove mod jars from dot_minecraft/mods
+	for file in mods_folder.glob("*.jar"):
+		file.unlink()

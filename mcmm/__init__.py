@@ -6,10 +6,7 @@ from types import ModuleType
 from typing import List, Union
 
 from . import curse_forge, github, optifine, modrinth
-from .commands import _activate_dispatcher
-from .commands import _download_dispatcher
-from .commands import _generate_dispatcher
-from .commands import _list_dispatcher
+from .commands import _activate_dispatcher, _deactivate_dispatcher, _download_dispatcher, _generate_dispatcher, _list_dispatcher
 from .dirs import gen_config_dir
 from .plugin_internal import load_providers
 
@@ -37,6 +34,9 @@ def cli():
 	if command == "activate":
 		_activate_dispatcher(argv[2:])
 
+	elif command == "deactivate":
+		_deactivate_dispatcher(argv[2:])
+
 	elif command == "download":
 		mod_providers = load_providers(aggregate_mod_provider_list())
 		_download_dispatcher(argv[2:], mod_providers)
@@ -53,6 +53,8 @@ def help():
 
 Commands:
     - activate <profile> - Removes all existing jars from the .minecraft/mods folder and copies the jars associated with <profile> into .minecraft/mods.
+
+	- deactivate [minecraft folder] - Removes all existing jars from the default installation, or a specific installation, if one is provided.
 
     - download <profile> - Downloads all jars defined in <profile> to a storage location.
         --mc-version <version> - Forces a download of jars for Minecraft Version <version> in all supporting Mod Providers.
