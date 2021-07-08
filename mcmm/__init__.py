@@ -54,7 +54,7 @@ def help():
 Commands:
     - activate <profile> - Removes all existing jars from the .minecraft/mods folder and copies the jars associated with <profile> into .minecraft/mods.
 
-	- deactivate [minecraft folder] - Removes all existing jars from the default installation, or a specific installation, if one is provided.
+    - deactivate [minecraft folder] - Removes all existing jars from the default installation, or a specific installation, if one is provided.
 
     - download <profile> - Downloads all jars defined in <profile> to a storage location.
         --mc-version <version> - Forces a download of jars for Minecraft Version <version> in all supporting Mod Providers.
