@@ -6,7 +6,7 @@ from types import ModuleType
 from typing import List, Union
 
 from . import curse_forge, github, optifine, modrinth
-from .commands import _activate_dispatcher, _deactivate_dispatcher, _download_dispatcher, _generate_dispatcher, _list_dispatcher
+from .commands import _activate_dispatcher, _deactivate_dispatcher, _download_dispatcher, _generate_dispatcher, _list_dispatcher, _modify_dispatcher
 from .dirs import gen_config_dir
 from .plugin_internal import load_providers
 
@@ -48,6 +48,9 @@ def cli():
 
     elif command == "list":
         _list_dispatcher(argv[2:])
+
+    elif command == "modify":
+        _modify_dispatcher(argv[2:])
 
 
 def help():

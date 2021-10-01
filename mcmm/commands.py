@@ -220,8 +220,40 @@ def deactivate(minecraft_dir: Union[Path, None] = None):
 
 
 def _modify_dispatcher(args: List[str]) -> None:
-    modify()
+    modify(args[0])
 
 
-def modify():
-    pass
+def modify(profile_name: str):
+    with (config_dir / f"profiles/{profile_name}.json").open("r") as f:
+        profile_obj = load(f)
+
+    while True:
+        print("""What do you want to modify?
+    1 - Minecraft Folder
+    2 - Minecraft Version
+    3 - Mod Providers
+""")
+        npt = input("Number (type 'finish' to save your changes): ")
+        if npt.lower() == "finish":
+            break
+
+        # TODO: Switch to match statement (3.10+)
+        if npt == "1":
+            mc_dir = input(
+                "Enter a new folder or type 'default' to use the system default: ")
+            if mc_dir == "default":
+                if "minecraft_folder" in profile_obj:
+                    del profile_obj["minecraft_folder"]
+            else:
+                profile_obj["minecraft_folder"] = mc_dir
+
+        elif npt == "2":
+            mc_ver = input("Enter a new Minecraft version: ")
+            profile_obj["minecraft_version"] = mc_ver
+
+        elif npt == "3":
+            print(
+                "Modifying Mod Providers is currently not supported by the modify command.")
+
+    with (config_dir / f"profiles/{profile_name}.json").open("w") as f:
+        dump(profile_obj, f, indent=4)
