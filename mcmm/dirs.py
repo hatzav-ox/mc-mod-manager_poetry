@@ -39,7 +39,7 @@ def gen_jar_storage_dir() -> Path:
 	elif current_os == "Windows":
 		_dir = Path(getenv("LOCALAPPDATA"))
 
-	_dir: Path = _dir / "mcmm/jar_storage"
+	_dir: Path = _dir / ".mcmm/jar_storage"
 	_dir.mkdir(parents=True, exist_ok=True)
 
 	return _dir
