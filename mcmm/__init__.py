@@ -5,8 +5,15 @@ from sys import argv
 from types import ModuleType
 from typing import List, Union
 
-from . import curse_forge, github, optifine, modrinth
-from .commands import _activate_dispatcher, _deactivate_dispatcher, _download_dispatcher, _generate_dispatcher, _list_dispatcher, _modify_dispatcher
+from . import curse_forge, github, optifine, modrinth, file
+from .commands import (
+    _activate_dispatcher,
+    _deactivate_dispatcher,
+    _download_dispatcher,
+    _generate_dispatcher,
+    _list_dispatcher,
+    _modify_dispatcher,
+)
 from .dirs import gen_config_dir
 from .plugin_internal import load_providers
 
@@ -14,8 +21,7 @@ __version__ = "0.0.5"
 
 
 def cli():
-    """cli parses out sys.argv and dispatches the appropriate commands.
-    """
+    """cli parses out sys.argv and dispatches the appropriate commands."""
     colorama_init()
 
     if "--help" in argv:
@@ -54,7 +60,8 @@ def cli():
 
 
 def help():
-    print(f"""Minecraft Mod Manager (mcmm) {__version__} Help
+    print(
+        f"""Minecraft Mod Manager (mcmm) {__version__} Help
 
 Commands:
     - activate <profile> - Removes all existing jars from the .minecraft/mods folder and copies the jars associated with <profile> into .minecraft/mods.
@@ -70,7 +77,8 @@ Commands:
 
     - modify <profile>   - Modify profile settings.
 
-""")
+"""
+    )
 
 
 def version():
@@ -78,7 +86,7 @@ def version():
 
 
 def aggregate_mod_provider_list() -> List[Union[str, ModuleType]]:
-    internal_mps = [curse_forge, optifine, github, modrinth]
+    internal_mps = [curse_forge, optifine, github, modrinth, file]
     config_dir = gen_config_dir()
     config_file = config_dir / "config.json"
 
