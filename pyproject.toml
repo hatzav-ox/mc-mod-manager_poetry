@@ -11,6 +11,7 @@ beautifulsoup4 = "^4.9.3"
 githubrelease = "^1.5.8"
 python-dateutil = "^2.8.1"
 colorama = "^0.4.4"
+pyinstaller = "^4.5.1"
 
 [tool.poetry.dev-dependencies]
 pyinstaller = "^4.3"
